@@ -5,7 +5,7 @@ import babel.messages.pofile
 import base64
 import datetime
 import functools
-import glob
+import glob·
 import hashlib
 import imghdr
 import io
@@ -1686,7 +1686,11 @@ class ReportController(http.Controller):
                     response = self.report_routes(reportname, docids=docids, converter=converter)
                 else:
                     # Particular report:
-                    data = url_decode(url.split('?')[1]).items()  # decoding the args represented in JSON
+                    params = url.split('?')
+                    if len(params) > 1:
+                        data = url_decode(params[1]).items()
+                    else:
+                        data = {}.items() # decoding the args represented in JSON
                     response = self.report_routes(reportname, converter=converter, **dict(data))
 
                 report = request.env['ir.actions.report']._get_report_from_name(reportname)
